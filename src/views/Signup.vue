@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="signup">
     <input type="text" v-model="email" name="email">
     <input type="password" v-model="password" name="password">
 
@@ -10,6 +10,7 @@
   </div>
 </template>
 <script>
+import firebase from 'firebase'
 export default {
   name: "Signup",
   data() {
@@ -21,6 +22,11 @@ export default {
   },
   methods: {
     createUser: function() {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(() => {
+        this.$router.push({ name: 'home' })
+      }).catch((error) => {
+        this.errors = error
+      })
     }
   }
 }
