@@ -30,32 +30,16 @@
   </v-layout>
 </template>
 <script>
-import firebase from 'firebase'
+import auth from '../services/auth'
+
 export default {
   name: "Signup",
   data() {
-    return {
-      email: "",
-      password: "",
-      errors: "",
-      rules: {
-        required: value => !!value || 'Required!',
-        email: value => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          return pattern.test(value) || 'Invalid email.'
-        },
-        min: value => value.length >= 8 || 'Min 8 chars'
-      },
-      show: false,
-    }
+    return auth.getAuthData()
   },
   methods: {
     signup: function() {
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(() => {
-        this.$router.push({ name: 'home' })
-      }).catch((error) => {
-        this.errors = error.message
-      })
+      auth.createAccount(this)
     }
   }
 }
